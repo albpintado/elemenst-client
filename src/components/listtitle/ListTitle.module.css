@@ -1,0 +1,23 @@
+.listTitleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  margin: 1rem 0;
+}
+
+.listTitle {
+  text-align: center;
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
+.deleteButton {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+}
+
+.deleteButton:nth-child(2) {
+  margin-right: 0.5rem;
+}

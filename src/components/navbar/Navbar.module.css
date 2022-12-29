@@ -1,0 +1,38 @@
+.header_title {
+  height: 2.7rem;
+  width: 100%;
+  font-size: 2em;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding: 0.5rem 0 0;
+  position: fixed;
+  top: 0;
+  background-color: #06121b;
+  z-index: 1;
+}
+
+.navbar_lists {
+  position: relative;
+  top: 2.7rem;
+  height: 2.3rem;
+  margin: 0;
+  display: flex;
+  gap: 1.25rem;
+  overflow: scroll;
+  align-items: center;
+  padding: 0 10px;
+  background-color: #06121b;
+  color: white;
+  z-index: 0;
+}
+
+.navbar_lists::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar_lists_list {
+  list-style: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}

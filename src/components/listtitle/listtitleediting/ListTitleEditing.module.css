@@ -1,0 +1,33 @@
+.listEditForm {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  margin: 1rem;
+}
+
+.listEditForm_editInput {
+  margin: 1rem 0;
+  border: none;
+  outline: none;
+  background-color: #e9e9e9;
+  text-align: center;
+  font-size: 1.25rem;
+  border-bottom: 2px solid #06121b;
+  width: 8rem;
+  text-align: left;
+  /* font-size: 2rem; */
+}
+
+.listEditForm_editInput:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #06121b;
+}
+
+.listEditForm_editIcon {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+}
