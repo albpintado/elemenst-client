@@ -7,20 +7,19 @@ import ListTitleEditing from "./listtitleediting/ListTitleEditing";
 import TrashIcon from "components/trashicon/TrashIcon";
 import ConfirmTrashIcon from "components/confirmtrashicon/ConfirmTrashIcon";
 import EditIcon from "components/editicon/EditIcon";
+import {
+  deleteList,
+  updateList,
+  useLineLists,
+} from "components/linelist/LineListContext";
 
 interface ListTitleProps {
   currentList: TLineList | undefined;
-  updateList: (itemId: number, newName: string) => void;
-  deleteList: (itemId: number) => void;
   setCurrentList: (list: TLineList | undefined) => void;
 }
 
-function ListTitle({
-  currentList,
-  setCurrentList,
-  updateList,
-  deleteList,
-}: ListTitleProps) {
+function ListTitle({ currentList, setCurrentList }: ListTitleProps) {
+  const { lineListsState, lineListsDispatch } = useLineLists();
   const originalTitle = currentList?.name;
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -47,23 +46,22 @@ function ListTitle({
     setText(value);
   };
 
-  const onSave = () => {
-    if (currentList != undefined) {
-      updateList(currentList.id, text);
+  const onUpdate = async () => {
+    if (currentList) {
+      updateList(lineListsDispatch, currentList, text);
+      setIsEditing(!isEditing);
     }
-    setIsEditing(!isEditing);
   };
 
   const onDelete = () => {
     if (currentList != undefined) {
-      deleteList(currentList.id);
+      deleteList(currentList, lineListsState, lineListsDispatch);
+      setCurrentList(undefined);
     }
-    setIsDeleting(!isDeleting);
-    setCurrentList(undefined);
   };
 
   const rightButtonSlot = isEditing ? (
-    <button className={styles.deleteButton} onClick={onSave}>
+    <button className={styles.deleteButton} onClick={onUpdate}>
       <SaveIcon />
     </button>
   ) : isDeleting ? (
@@ -107,7 +105,7 @@ function ListTitle({
         text={text}
         isEditingHandler={toggleEditingStatus}
         onChange={onChange}
-        onSave={onSave}
+        onSave={onUpdate}
       />
     );
   }

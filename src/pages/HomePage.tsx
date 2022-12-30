@@ -1,24 +1,31 @@
-import React from "react";
-import TextInput from "components/textinput";
+import React, { useEffect, useState } from "react";
+import { TLineList } from "components/linelist/LineList.type";
+import { getAllLists, useLineLists } from "components/linelist/LineListContext";
 
-type HomePageProps = {
-  createList: (event: React.FormEvent<HTMLFormElement>) => void;
-  itemContent: string;
-  setItemContent: (item: string) => void;
-};
+import ListPage from "./ListPage";
+import NoListsPage from "./NoListsPage";
 
-function HomePage({ createList, itemContent, setItemContent }: HomePageProps) {
+interface HomePageProps {
+  currentList: TLineList | undefined;
+  setCurrentList: (list: TLineList | undefined) => void;
+}
+
+function HomePage({ currentList, setCurrentList }: HomePageProps) {
+  const { lineListsDispatch } = useLineLists();
+  const [isFetching, setIsFetching] = useState(true);
+
+  useEffect(() => {
+    getAllLists(lineListsDispatch, setIsFetching);
+  }, []);
+
   return (
-    <>
-      <h2>No lists</h2>
-      <form onSubmit={createList}>
-        <TextInput
-          placeholder="Create new list"
-          itemContent={itemContent}
-          setItemContent={setItemContent}
-        />
-      </form>
-    </>
+    <main>
+      {isFetching ? (
+        <NoListsPage setCurrentList={setCurrentList} />
+      ) : (
+        <ListPage currentList={currentList} setCurrentList={setCurrentList} />
+      )}
+    </main>
   );
 }
 

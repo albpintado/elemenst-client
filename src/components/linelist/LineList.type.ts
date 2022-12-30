@@ -1,5 +1,5 @@
-export type TLineList = {
+export interface TLineList {
   id: number;
   creationDate: string;
   name: string;
-};
+}

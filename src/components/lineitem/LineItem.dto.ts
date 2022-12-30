@@ -1,5 +1,5 @@
-export type LineItemDto = {
+export interface LineItemDto {
   content: string;
   creationDate: string;
   lineListId: number;
-};
+}

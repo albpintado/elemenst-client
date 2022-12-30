@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TLineList } from "components/linelist/LineList.type";
 import styles from "./Navbar.module.css";
+import { LineListsContext } from "components/linelist/LineListContext";
 
 interface NavbarProps {
-  lineLists: TLineList[];
-  onClickList: (listName: string) => void;
-  onClickTitle: () => void;
+  setCurrentList: (list: TLineList | undefined) => void;
 }
 
-function Navbar({ lineLists, onClickTitle, onClickList }: NavbarProps) {
+function Navbar({ setCurrentList }: NavbarProps) {
+  const { lineListsState: listsState } = useContext(LineListsContext);
+  const onClickTitle = () => {
+    setCurrentList(undefined);
+  };
+
+  const onClickList = (listName: string) => {
+    const fetchItems = async () => {
+      const list = listsState.lineLists.find((list) => {
+        return list.name == listName;
+      });
+      if (list != undefined) {
+        setCurrentList(list);
+      }
+    };
+    fetchItems();
+  };
+
   return (
     <header>
       <h1 className={styles.header_title} onClick={onClickTitle}>
@@ -16,7 +32,7 @@ function Navbar({ lineLists, onClickTitle, onClickList }: NavbarProps) {
       </h1>
       <nav>
         <ul className={styles.navbar_lists}>
-          {lineLists.map((list) => {
+          {listsState.lineLists.map((list) => {
             return (
               <li
                 className={styles.navbar_lists_list}
