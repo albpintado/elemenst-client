@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { TLineList } from "components/linelist/LineList.type";
 import styles from "./Navbar.module.css";
-import { LineListsContext } from "components/linelist/LineListContext";
+import { LineListsContext } from "contexts/LineListContext";
+import { setLocalCurrentList } from "utils/LocalStorage";
 
 interface NavbarProps {
   setCurrentList: (list: TLineList | undefined) => void;
@@ -11,6 +12,7 @@ function Navbar({ setCurrentList }: NavbarProps) {
   const { lineListsState: listsState } = useContext(LineListsContext);
   const onClickTitle = () => {
     setCurrentList(undefined);
+    setLocalCurrentList(undefined);
   };
 
   const onClickList = (listName: string) => {
@@ -20,6 +22,7 @@ function Navbar({ setCurrentList }: NavbarProps) {
       });
       if (list != undefined) {
         setCurrentList(list);
+        setLocalCurrentList(list);
       }
     };
     fetchItems();

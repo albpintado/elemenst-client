@@ -1,4 +1,5 @@
 import React from "react";
+import { useError } from "contexts/CreationErrorContext";
 import styles from "./TextInput.module.css";
 
 type TextInputProps = {
@@ -8,8 +9,12 @@ type TextInputProps = {
 };
 
 function TextInput({ placeholder, setInputValue, inputValue }: TextInputProps) {
+  const { error } = useError();
   return (
     <div className={styles.addform_container}>
+      {error != "" && (
+        <p className={styles.addform_invalidInputError}>{error}</p>
+      )}
       <label htmlFor="addform_content" className={styles.addform_label}>
         {placeholder}
       </label>

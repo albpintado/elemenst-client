@@ -1,8 +1,9 @@
 import { TLineList } from "components/linelist/LineList.type";
 import React, { createContext, useContext, useReducer } from "react";
 import ItemsService from "services/items.service";
-import { LineItemDto } from "./LineItem.dto";
-import { TLineItem } from "./LineItem.type";
+import { LineItemDto } from "../components/lineitem/LineItem.dto";
+import { TLineItem } from "../components/lineitem/LineItem.type";
+import { useError } from "./CreationErrorContext";
 
 export enum LineItemsActionType {
   ADD_ITEM = "ADD_ITEM",
@@ -24,10 +25,12 @@ export interface LineItemsState {
 const lineItemsReducer = (state: LineItemsState, action: LineItemsAction) => {
   switch (action.type) {
     case LineItemsActionType.ADD_ITEM:
+      // Make add dispatcher add item always to the first position
       return {
         ...state,
         lineItems: [action.payload, ...state.lineItems],
       };
+
     case LineItemsActionType.CLEAR_LIST_ITEMS:
       return {
         ...state,
@@ -46,7 +49,7 @@ const lineItemsReducer = (state: LineItemsState, action: LineItemsAction) => {
         ...state,
         lineItems: state.lineItems.map((lineItem) => {
           if (lineItem.id == action.payload.id) {
-            lineItem.isCompleted = action.payload.isCompleted;
+            lineItem.isCompleted = !lineItem.isCompleted;
           }
           return lineItem;
         }),
@@ -100,33 +103,23 @@ const getAllLineItems = async (
   lineItemsDispatch: React.Dispatch<LineItemsAction>,
   currentList: TLineList | undefined
 ) => {
+  let itemsResponse: TLineItem[];
   if (currentList != undefined) {
-    const itemsResponse = await ItemsService.getAllItemsByLineList(
-      currentList.id
-    );
-    lineItemsDispatch({
-      type: LineItemsActionType.CLEAR_LIST_ITEMS,
-      payload: {} as TLineItem,
-    });
-    itemsResponse.map((lineItem) => {
-      lineItemsDispatch({
-        type: LineItemsActionType.ADD_ITEM,
-        payload: lineItem,
-      });
-    });
+    itemsResponse = await ItemsService.getAllItemsByLineList(currentList.id);
   } else {
-    const itemsResponse = await ItemsService.getAllItems();
-    lineItemsDispatch({
-      type: LineItemsActionType.CLEAR_LIST_ITEMS,
-      payload: {} as TLineItem,
-    });
-    itemsResponse.map((lineItem) => {
-      lineItemsDispatch({
-        type: LineItemsActionType.ADD_ITEM,
-        payload: lineItem,
-      });
-    });
+    itemsResponse = await ItemsService.getAllItems();
   }
+  lineItemsDispatch({
+    type: LineItemsActionType.CLEAR_LIST_ITEMS,
+    payload: {} as TLineItem,
+  });
+  const reversedItemsSortedByDate = itemsResponse.reverse();
+  reversedItemsSortedByDate.map((lineItem) => {
+    lineItemsDispatch({
+      type: LineItemsActionType.ADD_ITEM,
+      payload: lineItem,
+    });
+  });
 };
 
 const createLineItem = async (
@@ -141,10 +134,15 @@ const createLineItem = async (
     creationDate: creationDate,
     lineListId: currentList.id,
   };
-  const savedItem = await ItemsService.createItem(itemToSave);
-
-  lineItemsDispatch({ type: LineItemsActionType.ADD_ITEM, payload: savedItem });
-  resetInputValue();
+  const { data, status } = await ItemsService.createItem(itemToSave);
+  if (status == 200) {
+    lineItemsDispatch({
+      type: LineItemsActionType.ADD_ITEM,
+      payload: data as TLineItem,
+    });
+    resetInputValue();
+  }
+  return { status: status, data: data };
 };
 
 const completeLineItem = async (
@@ -163,11 +161,18 @@ const updateLineItem = async (
   lineItem: TLineItem,
   newContent: string
 ) => {
-  const savedItem = await ItemsService.updateItem(lineItem.id, newContent);
-  lineItemsDispatch({
-    type: LineItemsActionType.UPDATE_ITEM,
-    payload: savedItem,
-  });
+  const { data, status } = await ItemsService.updateItem(
+    lineItem.id,
+    newContent
+  );
+  if (status == 200) {
+    lineItemsDispatch({
+      type: LineItemsActionType.UPDATE_ITEM,
+      payload: data as TLineItem,
+    });
+  }
+
+  return { status: status, data: data };
 };
 
 const deleteLineItem = async (

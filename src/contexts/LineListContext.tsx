@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useReducer } from "react";
 import ListsService from "services/lists.service";
-import { LineListDto } from "./LineItem.dto";
-import { TLineList } from "./LineList.type";
+import { LINELIST_LENGTH_ERROR } from "utils/ErrorMessages";
+import { setLocalCurrentList } from "utils/LocalStorage";
+import { LineListDto } from "../components/linelist/LineItem.dto";
+import { TLineList } from "../components/linelist/LineList.type";
 
 export enum LineListsActionType {
   ADD_LIST = "ADD_LIST",
@@ -87,7 +89,8 @@ const getAllLists = async (
   setIsFetching: (value: React.SetStateAction<boolean>) => void
 ) => {
   const listsResponse = await ListsService.getAllLists();
-  listsResponse.map((list) => {
+  const reversedListsSortedByDate = listsResponse.reverse();
+  reversedListsSortedByDate.map((list) => {
     listsDispatch({ type: LineListsActionType.ADD_LIST, payload: list });
   });
   setIsFetching(false);
@@ -104,10 +107,18 @@ const createList = async (
     name: listName,
     creationDate: creationDate,
   };
-  const savedList = await ListsService.createList(listToSave);
-  listsDispatch({ type: LineListsActionType.ADD_LIST, payload: savedList });
-  setCurrentList(savedList);
+  const { data, status } = await ListsService.createList(listToSave);
+  if (status == 200) {
+    listsDispatch({
+      type: LineListsActionType.ADD_LIST,
+      payload: data as TLineList,
+    });
+    setCurrentList(data as TLineList);
+    setLocalCurrentList(data as TLineList);
+  }
   resetInputValue();
+
+  return { data, status };
 };
 
 const updateList = async (
@@ -116,12 +127,21 @@ const updateList = async (
   newName: string | undefined
 ) => {
   if (list && newName) {
-    const updatedList = await ListsService.updateList(list.id, newName);
-    listsDispatch({
-      type: LineListsActionType.UPDATE_LIST,
-      payload: updatedList,
-    });
+    const { data, status } = await ListsService.updateList(list.id, newName);
+    if (status == 200) {
+      listsDispatch({
+        type: LineListsActionType.UPDATE_LIST,
+        payload: data as TLineList,
+      });
+      setLocalCurrentList(data as TLineList);
+    }
+    return { data: data, status: status };
   }
+  if (list == undefined) {
+    return { data: "List not found", status: 404 };
+  }
+
+  return { data: LINELIST_LENGTH_ERROR, status: 422 };
 };
 
 const deleteList = async (

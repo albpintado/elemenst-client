@@ -6,19 +6,28 @@ import { TLineList } from "components/linelist/LineList.type";
 import Navbar from "components/navbar";
 import HomePage from "pages/HomePage";
 
-import { LineListsProvider } from "components/linelist/LineListContext";
-import { LineItemsProvider } from "components/lineitem/LineItemContext";
+import { LineListsProvider } from "contexts/LineListContext";
+import { LineItemsProvider } from "contexts/LineItemContext";
+import { getLocalCurrentList } from "utils/LocalStorage";
+import { ErrorProvider } from "contexts/CreationErrorContext";
 
 function App() {
-  const [currentList, setCurrentList] = useState<TLineList | undefined>();
+  const [currentList, setCurrentList] = useState<TLineList | undefined>(
+    getLocalCurrentList()
+  );
 
   return (
     <LineListsProvider>
       <LineItemsProvider>
-        <div className="wrapper">
-          <Navbar setCurrentList={setCurrentList} />
-          <HomePage currentList={currentList} setCurrentList={setCurrentList} />
-        </div>
+        <ErrorProvider>
+          <div className="wrapper">
+            <Navbar setCurrentList={setCurrentList} />
+            <HomePage
+              currentList={currentList}
+              setCurrentList={setCurrentList}
+            />
+          </div>
+        </ErrorProvider>
       </LineItemsProvider>
     </LineListsProvider>
   );

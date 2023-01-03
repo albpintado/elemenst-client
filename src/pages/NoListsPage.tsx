@@ -1,10 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import TextInput from "components/textinput";
 import { TLineList } from "components/linelist/LineList.type";
-import {
-  createList,
-  LineListsContext,
-} from "components/linelist/LineListContext";
+import { createList, LineListsContext } from "contexts/LineListContext";
 import useInput from "hooks/useInput";
 
 interface HomePageProps {
@@ -16,8 +13,8 @@ function NoListsPage({ setCurrentList }: HomePageProps) {
   const { inputValue, setInputValue, resetInputValue } = useInput();
 
   const onCreate = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (inputValue.current) {
-      event.preventDefault();
       createList(
         lineListsDispatch,
         inputValue.current.value,

@@ -81,19 +81,18 @@
 .lineitem_contentForm {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 4.125rem;
   width: 12rem;
 }
 
 .lineitem_contentInput {
-  position: relative;
-  top: 0.125rem;
+  padding: 0.125rem;
   border: none;
   outline: none;
   font-size: 1.25rem;
   background-color: transparent;
-  width: 100%;
+  width: 11rem;
   border-bottom: 2px solid #06121b;
 }
 

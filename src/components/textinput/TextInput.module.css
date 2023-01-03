@@ -27,3 +27,16 @@
   outline: none;
   border-bottom: 2px solid #06121b;
 }
+
+.addform_invalidInputError {
+  color: red;
+  width: 16.5rem;
+  font-size: 0.835rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border: 2px solid red;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  text-align: center;
+  background-color: #f8d7da;
+}

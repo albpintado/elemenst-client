@@ -12,7 +12,8 @@ import {
   deleteLineItem,
   updateLineItem,
   useLineItems,
-} from "./LineItemContext";
+} from "../../contexts/LineItemContext";
+import { useError } from "contexts/CreationErrorContext";
 
 interface LineItemProps {
   currentList: TLineList | undefined;
@@ -21,6 +22,7 @@ interface LineItemProps {
 
 function LineItem({ currentList, item }: LineItemProps) {
   const { lineItemsDispatch } = useLineItems();
+  const { setError } = useError();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -30,8 +32,18 @@ function LineItem({ currentList, item }: LineItemProps) {
     completeLineItem(lineItemsDispatch, item);
   };
 
-  const onUpdate = () => {
-    updateLineItem(lineItemsDispatch, item, itemContent);
+  const onUpdate = async () => {
+    const { data, status } = await updateLineItem(
+      lineItemsDispatch,
+      item,
+      itemContent
+    );
+    if (status == 422) {
+      setError(data as string);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
     setIsEditing(!isEditing);
   };
 

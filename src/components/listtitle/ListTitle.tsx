@@ -7,11 +7,14 @@ import ListTitleEditing from "./listtitleediting/ListTitleEditing";
 import TrashIcon from "components/trashicon/TrashIcon";
 import ConfirmTrashIcon from "components/confirmtrashicon/ConfirmTrashIcon";
 import EditIcon from "components/editicon/EditIcon";
+import { deleteList, updateList, useLineLists } from "contexts/LineListContext";
 import {
-  deleteList,
-  updateList,
-  useLineLists,
-} from "components/linelist/LineListContext";
+  deleteLineItem,
+  LineItemsActionType,
+  useLineItems,
+} from "contexts/LineItemContext";
+import { getLocalCurrentList, setLocalCurrentList } from "utils/LocalStorage";
+import { useError } from "contexts/CreationErrorContext";
 
 interface ListTitleProps {
   currentList: TLineList | undefined;
@@ -20,7 +23,9 @@ interface ListTitleProps {
 
 function ListTitle({ currentList, setCurrentList }: ListTitleProps) {
   const { lineListsState, lineListsDispatch } = useLineLists();
-  const originalTitle = currentList?.name;
+  const { lineItemsState, lineItemsDispatch } = useLineItems();
+  const { setError } = useError();
+  const originalTitle = getLocalCurrentList()?.name || currentList?.name;
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
@@ -48,16 +53,35 @@ function ListTitle({ currentList, setCurrentList }: ListTitleProps) {
 
   const onUpdate = async () => {
     if (currentList) {
-      updateList(lineListsDispatch, currentList, text);
+      const { data, status } = await updateList(
+        lineListsDispatch,
+        currentList,
+        text
+      );
+      if (status == 422) {
+        setText(currentList.name);
+        setError(data as string);
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }
       setIsEditing(!isEditing);
     }
   };
 
   const onDelete = () => {
     if (currentList != undefined) {
-      deleteList(currentList, lineListsState, lineListsDispatch);
+      const lineItemsFromCurrentList = lineItemsState.lineItems;
+      lineItemsFromCurrentList.forEach((item) => {
+        lineItemsDispatch({
+          type: LineItemsActionType.DELETE_ITEM,
+          payload: item,
+        });
+      });
       setCurrentList(undefined);
+      setLocalCurrentList(undefined);
     }
+    deleteList(currentList, lineListsState, lineListsDispatch);
   };
 
   const rightButtonSlot = isEditing ? (

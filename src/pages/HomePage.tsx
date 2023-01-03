@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TLineList } from "components/linelist/LineList.type";
-import { getAllLists, useLineLists } from "components/linelist/LineListContext";
+import { getAllLists, useLineLists } from "contexts/LineListContext";
 
 import ListPage from "./ListPage";
 import NoListsPage from "./NoListsPage";
