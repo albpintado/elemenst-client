@@ -1,33 +1,29 @@
 import React from "react";
+import { useError } from "contexts/CreationErrorContext";
 import styles from "./TextInput.module.css";
 
 type TextInputProps = {
   placeholder: string;
-  setItemContent: (newValue: string) => void;
-  itemContent: string;
+  setInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  inputValue: React.RefObject<HTMLInputElement>;
 };
 
-function TextInput({
-  placeholder,
-  itemContent: newItem,
-  setItemContent: setState,
-}: TextInputProps) {
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setState(value);
-  };
-
+function TextInput({ placeholder, setInputValue, inputValue }: TextInputProps) {
+  const { error } = useError();
   return (
     <div className={styles.addform_container}>
+      {error != "" && (
+        <p className={styles.addform_invalidInputError}>{error}</p>
+      )}
       <label htmlFor="addform_content" className={styles.addform_label}>
-        New item
+        {placeholder}
       </label>
       <input
         id="addform_content"
         type="text"
-        onChange={onChange}
+        onChange={setInputValue}
         className={styles.addform_input}
-        value={newItem}
+        ref={inputValue}
         placeholder={placeholder}
       />
     </div>
