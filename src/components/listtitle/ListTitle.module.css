@@ -12,12 +12,23 @@
   line-height: 3rem;
 }
 
-.deleteButton {
+.listTitleButton {
   all: unset;
   cursor: pointer;
   text-align: center;
 }
 
-.deleteButton:nth-child(2) {
+.darkListTitleButton {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+}
+
+.darkListTitleButton svg {
+  stroke: white;
+}
+
+.listTitleButton:nth-child(2),
+.darkListTitleButton:nth-child(2) {
   margin-right: 0.5rem;
 }

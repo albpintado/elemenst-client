@@ -10,6 +10,7 @@ import { LineListsProvider } from "contexts/LineListContext";
 import { LineItemsProvider } from "contexts/LineItemContext";
 import { getLocalCurrentList } from "utils/LocalStorage";
 import { ErrorProvider } from "contexts/CreationErrorContext";
+import { DarkModeProvider, useDarkMode } from "contexts/DarkModeContext";
 
 function App() {
   const [currentList, setCurrentList] = useState<TLineList | undefined>(
@@ -17,19 +18,18 @@ function App() {
   );
 
   return (
-    <LineListsProvider>
-      <LineItemsProvider>
-        <ErrorProvider>
-          <div className="wrapper">
-            <Navbar setCurrentList={setCurrentList} />
+    <DarkModeProvider>
+      <LineListsProvider>
+        <LineItemsProvider>
+          <ErrorProvider>
             <HomePage
               currentList={currentList}
               setCurrentList={setCurrentList}
             />
-          </div>
-        </ErrorProvider>
-      </LineItemsProvider>
-    </LineListsProvider>
+          </ErrorProvider>
+        </LineItemsProvider>
+      </LineListsProvider>
+    </DarkModeProvider>
   );
 }
 

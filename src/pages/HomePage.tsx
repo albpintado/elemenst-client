@@ -4,6 +4,8 @@ import { getAllLists, useLineLists } from "contexts/LineListContext";
 
 import ListPage from "./ListPage";
 import NoListsPage from "./NoListsPage";
+import Navbar from "components/navbar";
+import { useDarkMode } from "contexts/DarkModeContext";
 
 interface HomePageProps {
   currentList: TLineList | undefined;
@@ -11,6 +13,7 @@ interface HomePageProps {
 }
 
 function HomePage({ currentList, setCurrentList }: HomePageProps) {
+  const { darkMode } = useDarkMode();
   const { lineListsDispatch } = useLineLists();
   const [isFetching, setIsFetching] = useState(true);
 
@@ -19,13 +22,16 @@ function HomePage({ currentList, setCurrentList }: HomePageProps) {
   }, []);
 
   return (
-    <main>
-      {isFetching ? (
-        <NoListsPage setCurrentList={setCurrentList} />
-      ) : (
-        <ListPage currentList={currentList} setCurrentList={setCurrentList} />
-      )}
-    </main>
+    <div className={darkMode ? "dark-wrapper" : "light-wrapper"}>
+      <Navbar setCurrentList={setCurrentList} />
+      <main>
+        {isFetching ? (
+          <NoListsPage setCurrentList={setCurrentList} />
+        ) : (
+          <ListPage currentList={currentList} setCurrentList={setCurrentList} />
+        )}
+      </main>
+    </div>
   );
 }
 

@@ -14,6 +14,7 @@ import {
   useLineItems,
 } from "../../contexts/LineItemContext";
 import { useError } from "contexts/CreationErrorContext";
+import { useDarkMode } from "contexts/DarkModeContext";
 
 interface LineItemProps {
   currentList: TLineList | undefined;
@@ -23,6 +24,7 @@ interface LineItemProps {
 function LineItem({ currentList, item }: LineItemProps) {
   const { lineItemsDispatch } = useLineItems();
   const { setError } = useError();
+  const { darkMode } = useDarkMode();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -67,33 +69,53 @@ function LineItem({ currentList, item }: LineItemProps) {
   };
 
   const leftButtonSlot = isEditing ? (
-    <button className={styles.lineitem_editIcon} onClick={onUpdate}>
+    <button
+      className={darkMode ? `${styles.darkIcon} ${styles.icon}` : styles.icon}
+      onClick={onUpdate}
+    >
       <SaveIcon />
     </button>
   ) : isDeleting ? (
-    <button className={styles.lineitem_editIcon} onClick={toggleDeletingStatus}>
+    <button
+      className={darkMode ? `${styles.darkIcon} ${styles.icon}` : styles.icon}
+      onClick={toggleDeletingStatus}
+    >
       <CancelIcon />
     </button>
   ) : (
-    <button className={styles.lineitem_editIcon} onClick={toggleEditingStatus}>
+    <button
+      className={darkMode ? `${styles.darkIcon} ${styles.icon}` : styles.icon}
+      onClick={toggleEditingStatus}
+    >
       <EditIcon />
     </button>
   );
 
   const rightButtonSlot = isDeleting ? (
     <button
-      className={`${styles.lineitem_trashIcon} ${styles.lineitem_confirmTrashIcon}`}
+      className={`${styles.icon} ${styles.rightIcon} ${styles.confirmTrashIcon}`}
       onClick={onDelete}
     >
       <ConfirmTrashIcon />
     </button>
   ) : isEditing ? (
-    <button className={styles.lineitem_trashIcon} onClick={toggleEditingStatus}>
+    <button
+      className={
+        darkMode
+          ? `${styles.darkIcon} ${styles.icon} ${styles.rightIcon}`
+          : `${styles.icon} ${styles.rightIcon}`
+      }
+      onClick={toggleEditingStatus}
+    >
       <CancelIcon />
     </button>
   ) : (
     <button
-      className={styles.lineitem_trashIcon}
+      className={
+        darkMode
+          ? `${styles.darkIcon} ${styles.icon} ${styles.rightIcon}`
+          : `${styles.icon} ${styles.rightIcon}`
+      }
       onClick={toggleDeletingStatus}
     >
       <TrashIcon />
@@ -101,7 +123,10 @@ function LineItem({ currentList, item }: LineItemProps) {
   );
 
   return (
-    <article key={"Item n." + item.id} className={styles.lineitem_card}>
+    <article
+      key={"Item n." + item.id}
+      className={darkMode ? styles.darkLineItemCard : styles.lightLineItemCard}
+    >
       <input
         type="checkbox"
         className={styles.lineitem_checkbox}
@@ -114,7 +139,9 @@ function LineItem({ currentList, item }: LineItemProps) {
             type="text"
             value={itemContent}
             onChange={onChangeContent}
-            className={styles.lineitem_contentInput}
+            className={
+              darkMode ? styles.darkContentInput : styles.lightContentInput
+            }
           />
         </div>
       ) : (
