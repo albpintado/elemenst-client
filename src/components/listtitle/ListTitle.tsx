@@ -8,13 +8,10 @@ import TrashIcon from "components/trashicon/TrashIcon";
 import ConfirmTrashIcon from "components/confirmtrashicon/ConfirmTrashIcon";
 import EditIcon from "components/editicon/EditIcon";
 import { deleteList, updateList, useLineLists } from "contexts/LineListContext";
-import {
-  deleteLineItem,
-  LineItemsActionType,
-  useLineItems,
-} from "contexts/LineItemContext";
+import { LineItemsActionType, useLineItems } from "contexts/LineItemContext";
 import { getLocalCurrentList, setLocalCurrentList } from "utils/LocalStorage";
 import { useError } from "contexts/CreationErrorContext";
+import { useDarkMode } from "contexts/DarkModeContext";
 
 interface ListTitleProps {
   currentList: TLineList | undefined;
@@ -24,6 +21,7 @@ interface ListTitleProps {
 function ListTitle({ currentList, setCurrentList }: ListTitleProps) {
   const { lineListsState, lineListsDispatch } = useLineLists();
   const { lineItemsState, lineItemsDispatch } = useLineItems();
+  const { darkMode } = useDarkMode();
   const { setError } = useError();
   const originalTitle = getLocalCurrentList()?.name || currentList?.name;
   const [isEditing, setIsEditing] = useState(false);
@@ -85,32 +83,49 @@ function ListTitle({ currentList, setCurrentList }: ListTitleProps) {
   };
 
   const rightButtonSlot = isEditing ? (
-    <button className={styles.deleteButton} onClick={onUpdate}>
+    <button
+      className={darkMode ? styles.darkListTitleButton : styles.listTitleButton}
+      onClick={onUpdate}
+    >
       <SaveIcon />
     </button>
   ) : isDeleting ? (
-    <button className={styles.deleteButton} onClick={toggleDeletingStatus}>
+    <button
+      className={darkMode ? styles.darkListTitleButton : styles.listTitleButton}
+      onClick={toggleDeletingStatus}
+    >
       <CancelIcon />
     </button>
   ) : (
-    <button className={styles.deleteButton} onClick={toggleEditingStatus}>
+    <button
+      className={darkMode ? styles.darkListTitleButton : styles.listTitleButton}
+      onClick={toggleEditingStatus}
+    >
       <EditIcon />
     </button>
   );
 
   const leftButtonSlot = isDeleting ? (
     <button
-      className={`${styles.deleteButton} ${styles.lineitem_confirmTrashIcon}`}
+      className={`${
+        darkMode ? styles.darkListTitleButton : styles.listTitleButton
+      } ${styles.ConfirmTrashIcon}`}
       onClick={onDelete}
     >
       <ConfirmTrashIcon />
     </button>
   ) : isEditing ? (
-    <button className={styles.deleteButton} onClick={toggleEditingStatus}>
+    <button
+      className={darkMode ? styles.darkListTitleButton : styles.listTitleButton}
+      onClick={toggleEditingStatus}
+    >
       <CancelIcon />
     </button>
   ) : (
-    <button className={styles.deleteButton} onClick={toggleDeletingStatus}>
+    <button
+      className={darkMode ? styles.darkListTitleButton : styles.listTitleButton}
+      onClick={toggleDeletingStatus}
+    >
       <TrashIcon />
     </button>
   );

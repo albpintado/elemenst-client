@@ -3,6 +3,7 @@ import LineItem from "components/lineitem";
 import styles from "./LineList.module.css";
 import { TLineList } from "./LineList.type";
 import { useLineItems } from "contexts/LineItemContext";
+import { useDarkMode } from "contexts/DarkModeContext";
 
 interface LineListProps {
   currentList: TLineList | undefined;
@@ -10,6 +11,7 @@ interface LineListProps {
 
 function LineList({ currentList }: LineListProps) {
   const { lineItemsState } = useLineItems();
+  const { darkMode } = useDarkMode();
 
   // Sort line items putting all completed items at the bottom, sorted by item id
   const sortedLineItems = lineItemsState.lineItems.sort((a, b) => {
@@ -27,7 +29,13 @@ function LineList({ currentList }: LineListProps) {
       <p className={styles.noItemsText}>No items</p>
     </section>
   ) : (
-    <section className={styles.lineList}>
+    <section
+      className={
+        darkMode
+          ? `${styles.lineList} ${styles.dark}`
+          : `${styles.lineList} ${styles.light}`
+      }
+    >
       {sortedLineItems.map((item) => {
         return (
           <LineItem

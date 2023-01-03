@@ -1,9 +1,18 @@
-.lineitem_card {
+.lightLineItemCard {
   width: 90%;
   display: grid;
   grid-template-columns: 0.5fr 2fr 0.5fr 0.5fr;
   margin: 0.5rem auto;
   border: 1px solid #092938;
+  border-radius: 0.5rem;
+}
+
+.darkLineItemCard {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 0.5fr 0.5fr;
+  margin: 0.5rem auto;
+  border: 1px solid white;
   border-radius: 0.5rem;
 }
 
@@ -59,13 +68,11 @@
   overflow: scroll;
   scrollbar-width: none;
   margin: 0;
-  /* margin: 1rem 0; */
 }
 
 .lineitem_listName {
   font-size: 0.875rem;
   margin: 0;
-  /* margin: 0 0 1rem; */
   color: gray;
 }
 
@@ -86,7 +93,7 @@
   width: 12rem;
 }
 
-.lineitem_contentInput {
+.lightContentInput {
   padding: 0.125rem;
   border: none;
   outline: none;
@@ -96,26 +103,44 @@
   border-bottom: 2px solid #06121b;
 }
 
-.lineitem_contentInput:focus {
+.darkContentInput {
+  padding: 0.125rem;
+  border: none;
+  outline: none;
+  font-size: 1.25rem;
+  background-color: transparent;
+  width: 11rem;
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+.lightContentInput:focus {
   outline: none;
   border: none;
   border-bottom: 2px solid #06121b;
 }
 
-.lineitem_editIcon {
+.darkContentInput:focus {
+  outline: none;
+  border: none;
+  border-bottom: 2px solid white;
+}
+
+.darkIcon svg {
+  stroke: white;
+}
+
+.icon {
   all: unset;
   cursor: pointer;
   text-align: center;
 }
 
-.lineitem_trashIcon {
-  all: unset;
-  cursor: pointer;
-  text-align: center;
+.rightIcon {
   margin-right: 0.5rem;
 }
 
-.lineitem_confirmTrashIcon svg {
+.confirmTrashIcon svg {
   stroke: #ff0000;
 }
 

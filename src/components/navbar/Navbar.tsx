@@ -3,6 +3,8 @@ import { TLineList } from "components/linelist/LineList.type";
 import styles from "./Navbar.module.css";
 import { LineListsContext } from "contexts/LineListContext";
 import { setLocalCurrentList } from "utils/LocalStorage";
+import { useDarkMode } from "contexts/DarkModeContext";
+import DarkIcon from "components/darkicon/DarkIcon";
 
 interface NavbarProps {
   setCurrentList: (list: TLineList | undefined) => void;
@@ -10,6 +12,12 @@ interface NavbarProps {
 
 function Navbar({ setCurrentList }: NavbarProps) {
   const { lineListsState: listsState } = useContext(LineListsContext);
+  const { darkMode, setDarkMode } = useDarkMode();
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   const onClickTitle = () => {
     setCurrentList(undefined);
     setLocalCurrentList(undefined);
@@ -30,9 +38,22 @@ function Navbar({ setCurrentList }: NavbarProps) {
 
   return (
     <header>
-      <h1 className={styles.header_title} onClick={onClickTitle}>
-        Elemenst
-      </h1>
+      <div className={styles.headerContainer}>
+        <label>
+          <input
+            type="checkbox"
+            defaultChecked={darkMode}
+            onClick={toggleDarkMode}
+          />
+          <span
+            className={darkMode ? styles.lightModeIcon : styles.darkModeIcon}
+          />
+          <strong>{""}</strong>
+        </label>
+        <h1 className={styles.headerTitle} onClick={onClickTitle}>
+          Elemenst
+        </h1>
+      </div>
       <nav>
         <ul className={styles.navbar_lists}>
           {listsState.lineLists.map((list) => {
