@@ -1,6 +1,7 @@
 import React from "react";
 import { useError } from "contexts/CreationErrorContext";
 import styles from "./TextInput.module.css";
+import { useDarkMode } from "contexts/DarkModeContext";
 
 type TextInputProps = {
   placeholder: string;
@@ -10,19 +11,20 @@ type TextInputProps = {
 
 function TextInput({ placeholder, setInputValue, inputValue }: TextInputProps) {
   const { error } = useError();
+  const { darkMode } = useDarkMode();
   return (
-    <div className={styles.addform_container}>
-      {error != "" && (
-        <p className={styles.addform_invalidInputError}>{error}</p>
-      )}
-      <label htmlFor="addform_content" className={styles.addform_label}>
+    <div className={styles.addFormContainer}>
+      {error != "" && <p className={styles.addFormError}>{error}</p>}
+      <label htmlFor="addform_content" className={styles.addFormLabel}>
         {placeholder}
       </label>
       <input
         id="addform_content"
         type="text"
         onChange={setInputValue}
-        className={styles.addform_input}
+        className={
+          darkMode ? `${styles.addFormDarkInput}` : styles.addFormInput
+        }
         ref={inputValue}
         placeholder={placeholder}
       />

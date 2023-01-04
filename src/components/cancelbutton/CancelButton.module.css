@@ -1,0 +1,9 @@
+.cancelButton {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dark svg {
+  stroke: white;
+}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { TLineList } from "components/linelist/LineList.type";
 import styles from "./ListTitle.module.css";
-import SaveIcon from "components/saveicon/SaveIcon";
-import CancelIcon from "components/cancelicon/CancelIcon";
+import SaveIcon from "components/savebutton/SaveIcon";
+import CancelIcon from "components/cancelbutton/CancelIcon";
 import ListTitleEditing from "./listtitleediting/ListTitleEditing";
 import TrashIcon from "components/trashicon/TrashIcon";
 import ConfirmTrashIcon from "components/confirmtrashicon/ConfirmTrashIcon";

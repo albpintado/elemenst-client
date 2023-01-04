@@ -7,7 +7,7 @@
   margin: 1rem;
 }
 
-.listEditForm_editInput {
+.listEditFormInput {
   margin: 1rem 0;
   border: none;
   outline: none;
@@ -17,17 +17,20 @@
   border-bottom: 2px solid #06121b;
   width: 8rem;
   text-align: left;
-  /* font-size: 2rem; */
 }
 
-.listEditForm_editInput:focus {
+.dark {
+  background-color: #2b2b2b;
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+.darkIcon {
+  stroke: white;
+}
+
+.listEditFormInput:focus {
   border: none;
   outline: none;
   border-bottom: 2px solid #06121b;
-}
-
-.listEditForm_editIcon {
-  all: unset;
-  cursor: pointer;
-  text-align: center;
 }

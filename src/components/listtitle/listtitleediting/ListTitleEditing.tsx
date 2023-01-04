@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./ListTitleEditing.module.css";
-import CancelIcon from "components/cancelicon/CancelIcon";
-import SaveIcon from "components/saveicon/SaveIcon";
+import { useDarkMode } from "contexts/DarkModeContext";
+import SaveButton from "components/savebutton/SaveButton";
+import CancelButton from "components/cancelbutton/CancelButton";
 
 interface ListTitleEditingProps {
   text: string;
@@ -16,22 +17,21 @@ function ListTitleEditing({
   onChange,
   onSave,
 }: ListTitleEditingProps) {
+  const { darkMode } = useDarkMode();
+
+  const lightModeClasses = `${styles.listEditFormInput}`;
+  const darkModeClasses = `${styles.dark} ${styles.listEditFormInput}`;
+  const conditionalClasses = darkMode ? darkModeClasses : lightModeClasses;
+
   return (
     <div className={styles.listEditForm}>
-      <button className={styles.listEditForm_editIcon} onClick={onSave}>
-        <SaveIcon />
-      </button>
-      <button
-        className={styles.listEditForm_editIcon}
-        onClick={isEditingHandler}
-      >
-        <CancelIcon />
-      </button>
+      <SaveButton onSave={onSave} />
+      <CancelButton isEditingHandler={isEditingHandler} />
       <input
         type="text"
         value={text}
         onChange={onChange}
-        className={styles.listEditForm_editInput}
+        className={conditionalClasses}
       />
     </div>
   );

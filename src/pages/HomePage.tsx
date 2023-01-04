@@ -14,7 +14,7 @@ interface HomePageProps {
 
 function HomePage({ currentList, setCurrentList }: HomePageProps) {
   const { darkMode } = useDarkMode();
-  const { lineListsDispatch } = useLineLists();
+  const { lineListsState, lineListsDispatch } = useLineLists();
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function HomePage({ currentList, setCurrentList }: HomePageProps) {
     <div className={darkMode ? "dark-wrapper" : "light-wrapper"}>
       <Navbar setCurrentList={setCurrentList} />
       <main>
-        {isFetching ? (
+        {isFetching || lineListsState.lineLists.length == 0 ? (
           <NoListsPage setCurrentList={setCurrentList} />
         ) : (
           <ListPage currentList={currentList} setCurrentList={setCurrentList} />

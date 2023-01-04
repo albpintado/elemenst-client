@@ -3,6 +3,8 @@ import TextInput from "components/textinput";
 import { TLineList } from "components/linelist/LineList.type";
 import { createList, LineListsContext } from "contexts/LineListContext";
 import useInput from "hooks/useInput";
+import { useDarkMode } from "contexts/DarkModeContext";
+import Header from "components/header/Header";
 
 interface HomePageProps {
   setCurrentList: (list: TLineList) => void;
@@ -26,7 +28,7 @@ function NoListsPage({ setCurrentList }: HomePageProps) {
 
   return (
     <>
-      <h2>No lists</h2>
+      <Header />
       <form onSubmit={onCreate}>
         <TextInput
           placeholder="Create new list"

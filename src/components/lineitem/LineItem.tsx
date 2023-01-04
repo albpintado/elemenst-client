@@ -3,9 +3,9 @@ import { TLineItem } from "./LineItem.type";
 import styles from "./LineItem.module.css";
 import EditIcon from "../editicon/EditIcon";
 import TrashIcon from "components/trashicon/TrashIcon";
-import SaveIcon from "components/saveicon/SaveIcon";
+import SaveIcon from "components/savebutton/SaveIcon";
 import ConfirmTrashIcon from "components/confirmtrashicon/ConfirmTrashIcon";
-import CancelIcon from "components/cancelicon/CancelIcon";
+import CancelIcon from "components/cancelbutton/CancelIcon";
 import { TLineList } from "components/linelist/LineList.type";
 import {
   completeLineItem,
