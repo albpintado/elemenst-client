@@ -1,12 +1,11 @@
 .addFormContainer {
   width: 100%;
-  height: 100%;
+  height: 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 0.5rem;
-  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
 }
 
 .addFormLabel {
@@ -20,6 +19,8 @@
   border: 2px solid white;
   box-sizing: border-box;
   transition: border-bottom 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .addFormDarkInput {
@@ -29,6 +30,8 @@
   border: 2px solid rgb(235, 235, 235);
   box-sizing: border-box;
   transition: border-bottom 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .addFormInput:focus {

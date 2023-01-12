@@ -107,7 +107,7 @@ const getAllLineItems = async (
   if (currentList != undefined) {
     itemsResponse = await ItemsService.getAllItemsByLineList(currentList.id);
   } else {
-    itemsResponse = await ItemsService.getAllItems();
+    itemsResponse = await ItemsService.getAllItemsByUser();
   }
   lineItemsDispatch({
     type: LineItemsActionType.CLEAR_LIST_ITEMS,
@@ -186,6 +186,15 @@ const deleteLineItem = async (
   });
 };
 
+const clearLineItems = async (
+  lineItemsDispatch: React.Dispatch<LineItemsAction>
+) => {
+  lineItemsDispatch({
+    type: LineItemsActionType.CLEAR_LIST_ITEMS,
+    payload: {} as TLineItem,
+  });
+};
+
 export {
   LineItemsProvider,
   useLineItems,
@@ -194,4 +203,5 @@ export {
   completeLineItem,
   updateLineItem,
   deleteLineItem,
+  clearLineItems,
 };

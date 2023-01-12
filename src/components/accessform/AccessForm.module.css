@@ -1,0 +1,63 @@
+.accessFormContainer {
+  height: 100%;
+  width: 100vw;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 2rem;
+}
+
+.accessFormWithHeader {
+  height: 20rem;
+  border: 1px solid black;
+  border-radius: 1rem;
+  padding: 2rem 0;
+  box-shadow: 0 0 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.accessFormWithHeader input {
+  width: 10rem;
+}
+
+.accessForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 0 3rem;
+  padding: 2rem 0;
+}
+
+.accessForm button {
+  appearance: none;
+  background-color: #06121b;
+  border: 2px solid #06121b;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  color: white;
+  box-shadow: 0 0 0.5rem 0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.accessForm button:hover {
+  box-shadow: 0 0 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.text:first-of-type {
+  margin-top: 0.75rem;
+}
+
+.link {
+  text-decoration: underline;
+  color: #0000ee;
+  cursor: pointer;
+  user-select: none;
+}
+
+.text {
+  margin: 0.125rem;
+}

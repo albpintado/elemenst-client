@@ -144,6 +144,13 @@
   stroke: #ff0000;
 }
 
+@media screen and (400px < width < 500px) {
+  .lineitem_card {
+    width: 90%;
+    background-color: red;
+  }
+}
+
 @media screen and (width > 500px) {
   .lineitem_card {
     width: 90%;

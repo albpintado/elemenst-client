@@ -20,3 +20,13 @@ export interface LineItemError {
   data: string;
   status: number;
 }
+
+export interface UserResponse {
+  data: { username: string; id: number };
+  status: number;
+}
+
+export interface UserError {
+  data: string;
+  status: number;
+}
