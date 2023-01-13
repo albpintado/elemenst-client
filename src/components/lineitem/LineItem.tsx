@@ -125,7 +125,11 @@ function LineItem({ currentList, item }: LineItemProps) {
   return (
     <article
       key={"Item n." + item.id}
-      className={darkMode ? styles.darkLineItemCard : styles.lightLineItemCard}
+      className={
+        darkMode
+          ? `${styles.lineItemCard} ${styles.darkCard}`
+          : styles.lineItemCard
+      }
     >
       <input
         type="checkbox"

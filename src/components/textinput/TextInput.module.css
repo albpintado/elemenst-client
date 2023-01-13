@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 0.5rem;
 }
 
 .addFormLabel {
@@ -50,4 +49,7 @@
   padding: 0.25rem;
   text-align: center;
   background-color: #f8d7da;
+  position: absolute;
+  top: 5.75rem;
+  z-index: 100;
 }

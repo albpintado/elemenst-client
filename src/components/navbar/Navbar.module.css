@@ -69,6 +69,10 @@
   background-color: #2b2b2b;
 }
 
+.unauthenticatedDark {
+  background-color: #2b2b2b;
+}
+
 .navbarListItem {
   list-style: none;
   cursor: pointer;

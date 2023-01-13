@@ -75,19 +75,15 @@ function Navbar({ setCurrentList }: NavbarProps) {
             ? `${styles.navbar} ${styles.unauthenticated} ${styles.dark}`
             : !isAuthenticated
             ? `${styles.navbar} ${styles.unauthenticated}`
-            : darkMode && isAuthenticated
-            ? `${styles.navbar} ${styles.dark}`
             : styles.navbar
         }
       >
         <ul
           className={
             darkMode && !isAuthenticated
-              ? `${styles.navbarList} ${styles.unauthenticated} ${styles.dark}`
+              ? `${styles.navbarList} ${styles.unauthenticated} ${styles.unauthenticatedDark}`
               : !isAuthenticated
               ? `${styles.navbarList} ${styles.unauthenticated}`
-              : darkMode && isAuthenticated
-              ? `${styles.navbarList} ${styles.dark}`
               : styles.navbarList
           }
         >
