@@ -21,6 +21,11 @@ export interface LineItemError {
   status: number;
 }
 
+export interface LoginResponse {
+  data: string | null;
+  status: number;
+}
+
 export interface UserResponse {
   data: { username: string; id: number };
   status: number;

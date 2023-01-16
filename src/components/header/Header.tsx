@@ -9,7 +9,7 @@ function Header() {
     <h2
       className={
         darkMode
-          ? `${styles.noItemsHeader} ${styles.dark}`
+          ? `${styles.noItemsHeader} ${styles.lightText}`
           : styles.noItemsHeader
       }
     >

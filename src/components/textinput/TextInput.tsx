@@ -17,25 +17,23 @@ function TextInput({
   setInputValue,
   inputValue,
 }: TextInputProps) {
-  const { error } = useError();
   const { darkMode } = useDarkMode();
+
+  const conditionalClass =
+    placeholder === "Username" || placeholder === "Password"
+      ? styles.formInput
+      : darkMode
+      ? styles.formInput
+      : `${styles.formInput} ${styles.darkColor}`;
+
   return (
-    <div className={styles.addFormContainer}>
-      {error != "" && <p className={styles.addFormError}>{error}</p>}
-      <label htmlFor="addform_content" className={styles.addFormLabel}>
-        {placeholder}
-      </label>
-      <input
-        id="addform_content"
-        type={type}
-        onChange={setInputValue}
-        className={
-          darkMode ? `${styles.addFormDarkInput}` : styles.addFormInput
-        }
-        ref={inputValue}
-        placeholder={placeholder}
-      />
-    </div>
+    <input
+      placeholder={placeholder}
+      type={type}
+      className={conditionalClass}
+      ref={inputValue}
+      onChange={setInputValue}
+    />
   );
 }
 

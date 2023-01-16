@@ -1,10 +1,10 @@
-import { UserError, UserResponse } from "utils/ApiResponses";
+import { LoginResponse, UserError, UserResponse } from "utils/ApiResponses";
 import { removeTokenAndCurrentList, setToken } from "utils/Authentication";
 
 const logIn = async (
   userName: string,
   password: string
-): Promise<string | null> => {
+): Promise<LoginResponse> => {
   const request = await fetch("http://localhost:8080/login", {
     method: "POST",
     headers: {
@@ -18,7 +18,7 @@ const logIn = async (
     const token = authorizationHeader.split("Bearer ")[1];
     setToken(token);
   }
-  return authorizationHeader;
+  return { data: authorizationHeader, status: request.status };
 };
 
 const register = async (
@@ -33,6 +33,7 @@ const register = async (
     body: JSON.stringify({ userName: userName, password: password }),
   });
 
+  console.log(request);
   const response = await request.json();
 
   return { data: response, status: request.status };

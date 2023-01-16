@@ -1,6 +1,8 @@
+import ErrorMessage from "components/errormessage/ErrorMessage";
 import TextInput from "components/textinput";
 import { EInputType } from "components/textinput/InputType";
 import { useAuth } from "contexts/AuthContext";
+import { useError } from "contexts/CreationErrorContext";
 import useInput from "hooks/useInput";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,6 +17,7 @@ interface AccessFormProps {
 
 function AccessForm({ isLogin, setIsLogInPage }: AccessFormProps) {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { setError } = useError();
 
   const { inputValue: usernameValue, setInputValue: setUsernameValue } =
     useInput();
@@ -34,57 +37,73 @@ function AccessForm({ isLogin, setIsLogInPage }: AccessFormProps) {
   const onLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (usernameValue.current && passwordValue.current) {
-      await logIn(
+      const { status } = await logIn(
         usernameValue.current.value,
         passwordValue.current.value
-      ).then((response) => {
-        if (response) {
-          setIsAuthenticated(true);
-        }
-      });
+      );
+
+      if (status == 200) {
+        setIsAuthenticated(true);
+      } else {
+        setError("Wrong credentials.");
+
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }
     }
   };
 
   const onRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (usernameValue.current && passwordValue.current) {
-      const response = await register(
+      const { data, status } = await register(
         usernameValue.current.value,
         passwordValue.current.value
       );
 
-      if (response.status === 201) {
-        usernameValue.current.value = "";
-        passwordValue.current.value = "";
-        setIsLogInPage(true);
-        navigate("/login");
+      if (status == 422) {
+        setError(data as string);
+
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+
+        return;
       }
+
+      usernameValue.current.value = "";
+      passwordValue.current.value = "";
+      setIsLogInPage(true);
+      navigate("/login");
     }
   };
 
   return (
     <div className={styles.accessFormContainer}>
-      <section className={styles.accessFormWithHeader}>
-        <h2>{logInOrRegister}</h2>
-        <form
-          className={styles.accessForm}
-          onSubmit={isLogin ? onLogin : onRegister}
-        >
-          <TextInput
-            placeholder="Username"
-            type={EInputType.TEXT}
-            setInputValue={setUsernameValue}
-            inputValue={usernameValue}
-          />
-          <TextInput
-            placeholder="Password"
-            type={EInputType.PASSWORD}
-            setInputValue={setPasswordValue}
-            inputValue={passwordValue}
-          />
-          <button type="submit">{isLogin ? "Log In" : "Register"}</button>
-        </form>
-      </section>
+      <ErrorMessage />
+      <div className={styles.card}>
+        <div className={styles.card__content}>
+          <h2 className={styles.accessHeader}>{logInOrRegister}</h2>
+          <form onSubmit={isLogin ? onLogin : onRegister}>
+            <TextInput
+              type={EInputType.TEXT}
+              placeholder="Username"
+              inputValue={usernameValue}
+              setInputValue={setUsernameValue}
+            />
+            <TextInput
+              type={EInputType.PASSWORD}
+              placeholder="Password"
+              inputValue={passwordValue}
+              setInputValue={setPasswordValue}
+            />
+            <button className={styles.accessButton} type="submit">
+              <span>{isLogin ? "Log In" : "Register"}</span>
+            </button>
+          </form>
+        </div>
+      </div>
       {isLogin ? (
         <p className={styles.text}>Don't have an account?</p>
       ) : (

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import LineList from "components/linelist";
 import { TLineList } from "components/linelist/LineList.type";
 import ListTitle from "components/listtitle/ListTitle";
-import TextInput from "components/textinput";
 import { createList, useLineLists } from "contexts/LineListContext";
 import useInput from "hooks/useInput";
 import {
@@ -11,6 +10,8 @@ import {
   useLineItems,
 } from "contexts/LineItemContext";
 import { useError } from "contexts/CreationErrorContext";
+import ErrorMessage from "components/errormessage/ErrorMessage";
+import CreationForm from "components/creationform/CreationForm";
 
 type ListPageProps = {
   currentList: TLineList | undefined;
@@ -38,6 +39,7 @@ function ListPage({ currentList, setCurrentList }: ListPageProps) {
         setCurrentList,
         resetInputValue
       );
+
       if (status == 422) {
         setError(data as string);
         setTimeout(() => {
@@ -69,15 +71,13 @@ function ListPage({ currentList, setCurrentList }: ListPageProps) {
   return (
     <>
       <ListTitle currentList={currentList} setCurrentList={setCurrentList} />
-      <form onSubmit={currentList == undefined ? onCreateList : onCreateItem}>
-        <TextInput
-          placeholder={
-            currentList == undefined ? "Add new list" : "Add new item"
-          }
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-        />
-      </form>
+      <ErrorMessage />
+      <CreationForm
+        onCreate={currentList == undefined ? onCreateList : onCreateItem}
+        text={currentList == undefined ? "Add new list" : "Add new item"}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
       <LineList currentList={currentList} />
     </>
   );

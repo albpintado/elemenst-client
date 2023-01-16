@@ -5,6 +5,10 @@
   margin-top: 0.25rem;
 }
 
+.lightText {
+  color: #fff;
+}
+
 .lineList {
   /* Greatest screen */
   --w1: 2200px;
