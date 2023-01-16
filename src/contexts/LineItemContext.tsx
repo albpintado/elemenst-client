@@ -28,7 +28,7 @@ const lineItemsReducer = (state: LineItemsState, action: LineItemsAction) => {
       // Make add dispatcher add item always to the first position
       return {
         ...state,
-        lineItems: [action.payload, ...state.lineItems],
+        lineItems: [...state.lineItems, action.payload],
       };
 
     case LineItemsActionType.CLEAR_LIST_ITEMS:
@@ -113,8 +113,7 @@ const getAllLineItems = async (
     type: LineItemsActionType.CLEAR_LIST_ITEMS,
     payload: {} as TLineItem,
   });
-  const reversedItemsSortedByDate = itemsResponse.reverse();
-  reversedItemsSortedByDate.map((lineItem) => {
+  itemsResponse.map((lineItem) => {
     lineItemsDispatch({
       type: LineItemsActionType.ADD_ITEM,
       payload: lineItem,

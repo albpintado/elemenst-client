@@ -20,7 +20,7 @@ function LineList({ currentList }: LineListProps) {
     } else if (!a.isCompleted && b.isCompleted) {
       return -1;
     } else {
-      return a.id - b.id;
+      return b.id - a.id;
     }
   });
 
