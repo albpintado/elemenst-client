@@ -5,8 +5,51 @@
   margin-top: 0.25rem;
 }
 
+.lightText {
+  color: #fff;
+}
+
 .lineList {
+  /* Greatest screen */
+  --w1: 2200px;
+  --n: 6;
+  /* Medium screen */
+  --w2: 1450px;
+  --m: 4;
+  /* Smaller screen */
+  --w3: 700px;
+  --p: 2;
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      clamp(
+        /* Greater than w3 */
+          clamp(
+            /* Greater than w2 */
+              clamp(
+                /* Greater than w1 */ 100% / (var(--n) + 1) + 0.1%,
+                (var(--w1) - 100vw) * 1000,
+                /* Less than w1 */ 100% / (var(--m) + 1) + 0.1%
+              ),
+            (var(--w2) - 100vw) * 1000,
+            /* Less than w2 */ 100% / (var(--p) + 1) + 0.1%
+          ),
+        (var(--w3) - 100vw) * 1000,
+        /* Less than w3 */ 100%
+      ),
+      1fr
+    )
+  );
+
+  /* Remove the gap between the items */
+  align-content: start;
+  height: calc(100vh - 12rem);
+  margin: 0 0.5rem;
   overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .light {

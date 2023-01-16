@@ -26,7 +26,15 @@ function LineList({ currentList }: LineListProps) {
 
   return lineItemsState.lineItems.length == 0 ? (
     <section>
-      <p className={styles.noItemsText}>No items</p>
+      <p
+        className={
+          darkMode
+            ? `${styles.noItemsText} ${styles.lightText}`
+            : styles.noItemsText
+        }
+      >
+        No items
+      </p>
     </section>
   ) : (
     <section

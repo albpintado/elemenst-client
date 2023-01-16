@@ -7,6 +7,7 @@ import { TLineList } from "../components/linelist/LineList.type";
 
 export enum LineListsActionType {
   ADD_LIST = "ADD_LIST",
+  CLEAR_LISTS = "CLEAR_LISTS",
   DELETE_LIST = "DELETE_LIST",
   UPDATE_LIST = "UPDATE_LIST",
 }
@@ -26,6 +27,11 @@ const lineListsReducer = (state: LineListsState, action: LineListsAction) => {
       return {
         ...state,
         lineLists: [action.payload, ...state.lineLists],
+      };
+    case LineListsActionType.CLEAR_LISTS:
+      return {
+        ...state,
+        lineLists: [],
       };
     case LineListsActionType.DELETE_LIST:
       return {
@@ -159,6 +165,13 @@ const deleteList = async (
   }
 };
 
+const clearLists = (listsDispatch: (value: LineListsAction) => void) => {
+  listsDispatch({
+    type: LineListsActionType.CLEAR_LISTS,
+    payload: {} as TLineList,
+  });
+};
+
 export {
   LineListsProvider,
   useLineLists,
@@ -166,4 +179,5 @@ export {
   createList,
   updateList,
   deleteList,
+  clearLists,
 };

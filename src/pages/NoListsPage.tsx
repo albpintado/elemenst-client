@@ -1,41 +1,51 @@
-import React, { useContext, useState } from "react";
-import TextInput from "components/textinput";
+import React from "react";
 import { TLineList } from "components/linelist/LineList.type";
-import { createList, LineListsContext } from "contexts/LineListContext";
+import { createList, useLineLists } from "contexts/LineListContext";
 import useInput from "hooks/useInput";
-import { useDarkMode } from "contexts/DarkModeContext";
 import Header from "components/header/Header";
+import { useError } from "contexts/CreationErrorContext";
+import ErrorMessage from "components/errormessage/ErrorMessage";
+import CreationForm from "components/creationform/CreationForm";
 
 interface HomePageProps {
   setCurrentList: (list: TLineList) => void;
 }
 
 function NoListsPage({ setCurrentList }: HomePageProps) {
-  const { lineListsDispatch } = useContext(LineListsContext);
+  const { lineListsDispatch } = useLineLists();
+  const { setError } = useError();
+
   const { inputValue, setInputValue, resetInputValue } = useInput();
 
   const onCreate = async (event: React.FormEvent) => {
     event.preventDefault();
     if (inputValue.current) {
-      createList(
+      const { data, status } = await createList(
         lineListsDispatch,
         inputValue.current.value,
         setCurrentList,
         resetInputValue
       );
+
+      if (status == 422) {
+        setError(data as string);
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }
     }
   };
 
   return (
     <>
       <Header />
-      <form onSubmit={onCreate}>
-        <TextInput
-          placeholder="Create new list"
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-        />
-      </form>
+      <ErrorMessage />
+      <CreationForm
+        onCreate={onCreate}
+        text="Add new list"
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
     </>
   );
 }

@@ -1,0 +1,6 @@
+.logoutButton {
+  all: unset;
+  cursor: pointer;
+  text-align: right;
+  padding-right: 0.25rem;
+}

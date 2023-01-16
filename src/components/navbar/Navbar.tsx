@@ -1,18 +1,26 @@
-import React, { useContext } from "react";
+import React from "react";
 import { TLineList } from "components/linelist/LineList.type";
 import styles from "./Navbar.module.css";
-import { LineListsContext } from "contexts/LineListContext";
+import { clearLists, useLineLists } from "contexts/LineListContext";
 import { setLocalCurrentList } from "utils/LocalStorage";
 import { useDarkMode } from "contexts/DarkModeContext";
-import DarkIcon from "components/darkicon/DarkIcon";
+import { useNavigate } from "react-router-dom";
+import { logOut } from "services/auth.service";
+import LogoutButton from "components/logoutbutton/LogoutButton";
+import { useAuth } from "contexts/AuthContext";
+import { clearLineItems, useLineItems } from "contexts/LineItemContext";
 
 interface NavbarProps {
   setCurrentList: (list: TLineList | undefined) => void;
 }
 
 function Navbar({ setCurrentList }: NavbarProps) {
-  const { lineListsState: listsState } = useContext(LineListsContext);
+  const { lineListsState, lineListsDispatch } = useLineLists();
+  const { lineItemsDispatch } = useLineItems();
   const { darkMode, setDarkMode } = useDarkMode();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+
+  const navigate = useNavigate();
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -25,7 +33,7 @@ function Navbar({ setCurrentList }: NavbarProps) {
 
   const onClickList = (listName: string) => {
     const fetchItems = async () => {
-      const list = listsState.lineLists.find((list) => {
+      const list = lineListsState.lineLists.find((list) => {
         return list.name == listName;
       });
       if (list != undefined) {
@@ -36,30 +44,53 @@ function Navbar({ setCurrentList }: NavbarProps) {
     fetchItems();
   };
 
+  const onLogout = async () => {
+    await logOut();
+    setIsAuthenticated(false);
+    clearLists(lineListsDispatch);
+    clearLineItems(lineItemsDispatch);
+    navigate("/login");
+  };
+
   return (
-    <header>
-      <div className={styles.headerContainer}>
-        <label>
-          <input
-            type="checkbox"
-            defaultChecked={darkMode}
-            onClick={toggleDarkMode}
-          />
-          <span
-            className={darkMode ? styles.lightModeIcon : styles.darkModeIcon}
-          />
-          <strong>{""}</strong>
-        </label>
-        <h1 className={styles.headerTitle} onClick={onClickTitle}>
-          Elemenst
-        </h1>
-      </div>
-      <nav>
-        <ul className={styles.navbar_lists}>
-          {listsState.lineLists.map((list) => {
+    <header className={styles.headerContainer}>
+      <label>
+        <input
+          type="checkbox"
+          defaultChecked={darkMode}
+          onClick={toggleDarkMode}
+        />
+        <span
+          className={darkMode ? styles.lightModeIcon : styles.darkModeIcon}
+        />
+        <strong>{""}</strong>
+      </label>
+      <h1 className={styles.headerTitle} onClick={onClickTitle}>
+        Elemenst
+      </h1>
+      {isAuthenticated && <LogoutButton onLogout={onLogout} />}
+      <nav
+        className={
+          darkMode && !isAuthenticated
+            ? `${styles.navbar} ${styles.unauthenticated} ${styles.dark}`
+            : !isAuthenticated
+            ? `${styles.navbar} ${styles.unauthenticated}`
+            : styles.navbar
+        }
+      >
+        <ul
+          className={
+            darkMode && !isAuthenticated
+              ? `${styles.navbarList} ${styles.unauthenticated} ${styles.unauthenticatedDark}`
+              : !isAuthenticated
+              ? `${styles.navbarList} ${styles.unauthenticated}`
+              : styles.navbarList
+          }
+        >
+          {lineListsState.lineLists.map((list) => {
             return (
               <li
-                className={styles.navbar_lists_list}
+                className={styles.navbarListItem}
                 key={"List n." + list.id}
                 onClick={() => onClickList(list.name)}
               >
