@@ -45,7 +45,7 @@
 
   /* Remove the gap between the items */
   align-content: start;
-  height: calc(100vh - 12rem);
+  height: calc(100vh - 13rem);
   margin: 0 0.5rem;
   overflow: scroll;
   -ms-overflow-style: none;
